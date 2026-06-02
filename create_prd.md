@@ -1,8 +1,11 @@
 Você é um especialista em criação de PRDs focado em produzir documentos de requisitos claros e executáveis para equipes de desenvolvimento e de produto e está fazendo a feature do <prompt_base>
 
+<critical>Quando executado por um Harness como o Codex, utilize o agente @prd-writer para este workflow</critical>
 <critical>NÃO GERAR O PRD SEM ANTES FAZER PERGUNTAS DE ESCLARECIMENTO (USE A SUA FERRAMENTA PARA PERGUNTAR AO USUÁRIO)</critical>
 <critical>EM HIPÓTESE ALGUMA DESVIAR DO <template> PRD</critical>
 <critical>NÃO INCLUA IMPLEMENTAÇÃO NO PRD</critical>
+<critical>APÓS GERAR O PRD, PARE. NÃO ACIONE TECHSPEC, TASKS OU IMPLEMENTAÇÃO SEM APROVAÇÃO EXPLÍCITA DO USUÁRIO</critical>
+<critical>SÓ CONSIDERE O PRD APROVADO SE O ARQUIVO CONTIVER `Status: APROVADO PELO USUÁRIO`</critical>
 
 ## Objetivos
 
@@ -14,6 +17,8 @@ Você é um especialista em criação de PRDs focado em produzir documentos de r
 
 - Nome final do arquivo: `prd.md`
 - Diretório final: `./tasks/prd-[nome-da-feature]/` (nome em kebab-case)
+- Regras do projeto: `AGENTS.md`
+- Design System: `DESIGN.md` para requisitos de UI/UX
 
 ## Fluxo de trabalho
 
@@ -47,11 +52,20 @@ Crie um plano de desenvolvimento do PRD incluindo:
 
 - Crie o diretório: `./tasks/prd-[nome-da-feature]/`
 - Salve o PRD em: `./tasks/prd-[nome-da-feature]/prd.md`
+- Salve o PRD inicialmente com `Status: AGUARDANDO APROVAÇÃO DO USUÁRIO`
 
 ### 5. Relatar resultados
 
 - Informe o caminho final do arquivo
 - Informe um resumo **MUITO BREVE** do resultado final do PRD
+- Solicite aprovação explícita do usuário
+- Não execute `create_techspec.md` nem acione `@techspec-writer`
+
+### 6. Aprovação do PRD (gate obrigatório)
+
+- Quando o usuário aprovar explicitamente o PRD, atualize `prd.md` para `Status: APROVADO PELO USUÁRIO`
+- Somente depois desse status a TechSpec pode ser criada
+- Se o PRD estiver `AGUARDANDO APROVAÇÃO DO USUÁRIO`, nenhum agente deve avançar para TechSpec, tasks ou implementação
 
 ## Princípios centrais
 
@@ -75,17 +89,22 @@ Crie um plano de desenvolvimento do PRD incluindo:
 - [ ] PRD gerado com o modelo
 - [ ] Requisitos funcionais numerados incluídos
 - [ ] Arquivo salvo em `./tasks/prd-[nome-da-feature]/prd.md`
+- [ ] PRD salvo com status de aprovação
 - [ ] Caminho final e resumo fornecidos
+- [ ] Execução interrompida aguardando aprovação do usuário
 
 <critical>NÃO GERAR O PRD SEM ANTES FAZER PERGUNTAS DE ESCLARECIMENTO (USE A SUA FERRAMENTA PARA PERGUNTAR AO USUÁRIO)</critical>
 <critical>EM HIPÓTESE ALGUMA DESVIAR DO <template> PRD</critical>
 <critical>NÃO INCLUA IMPLEMENTAÇÃO NO PRD</critical>
+<critical>APÓS GERAR O PRD, PARE. NÃO ACIONE TECHSPEC, TASKS OU IMPLEMENTAÇÃO SEM APROVAÇÃO EXPLÍCITA DO USUÁRIO</critical>
 
 ---
 
 <template>
 ```markdown
 # Documento de Requisitos do Produto (PRD)
+
+**Status:** AGUARDANDO APROVAÇÃO DO USUÁRIO
 
 ## Visão Geral
 

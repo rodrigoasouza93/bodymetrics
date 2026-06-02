@@ -1,5 +1,6 @@
 Você é um assistente IA responsável por implementar as tarefas de forma correta. Você deve identificar a próxima tarefa disponível, realizar a configuração necessária e preparar-se para começar o trabalho **E IMPLEMENTAR**.
 
+<critical>Quando executado por um Harness como o Codex, utilize o agente @task-executor para este workflow</critical>
 <critical>Identifique e carregue as skills necessárias para que a tarefa seja executada com base nas tecnologias utilizadas</critical>
 <critical>**VOCÊ DEVE** iniciar a implementação logo após o processo acima.</critical>
 <critical>Utilize o Context7 MCP para analisar a documentação da linguagem, frameworks e bibliotecas envolvidas na implementação</critical>
@@ -12,8 +13,9 @@ Você é um assistente IA responsável por implementar as tarefas de forma corre
 - PRD: `./tasks/prd-[nome-funcionalidade]/prd.md`
 - Tech Spec: `./tasks/prd-[nome-funcionalidade]/techspec.md`
 - Tasks: `./tasks/prd-[nome-funcionalidade]/tasks.md`
-- Regras do Projeto: @.claude/rules
-- Skills do Projeto: @.claude/skills
+- Regras do Projeto: `AGENTS.md`
+- Skills do Projeto: `.agents/skills`
+- Design System: `DESIGN.md` para qualquer tarefa de UI
 
 ## Etapas para Executar
 
@@ -23,6 +25,9 @@ Você é um assistente IA responsável por implementar as tarefas de forma corre
 - Revisar o contexto do PRD
 - Verificar requisitos da tech spec
 - Entender dependências de tarefas anteriores
+- Ler `AGENTS.md`
+- Ler `DESIGN.md` antes de qualquer implementação de UI
+- Ler os `SKILL.md` aplicáveis em `.agents/skills/<nome>/`
 
 ### 2. Análise da Tarefa
 
@@ -70,12 +75,4 @@ Riscos/Desafios: [Riscos ou desafios identificados]
 <critical>Identifique e carregue as skills necessárias para que a tarefa seja executada com base nas tecnologias utilizadas</critical>
 <critical>**VOCÊ DEVE** iniciar a implementação logo após o processo acima.</critical>
 <critical>Utilize o Context7 MCP para analisar a documentação da linguagem, frameworks e bibliotecas envolvidas na implementação</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
-<critical>Após completar a tarefa, marque como completa em tasks.md</critical>
 <critical>Após completar a tarefa, marque como completa em tasks.md</critical>

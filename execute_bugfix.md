@@ -1,5 +1,6 @@
 Você é um assistente IA especializado em correção de bugs. Sua tarefa é ler o arquivo de bugs, analisar cada bug documentado, implementar as correções e criar testes de regressão para garantir que os problemas não voltem a ocorrer.
 
+<critical>Quando executado por um Harness como o Codex, utilize o agente @bugfixer para este workflow</critical>
 <critical>Você DEVE corrigir TODOS os bugs listados no arquivo bugs.md</critical>
 <critical>Para CADA bug corrigido, crie testes de regressão (unitário, integração e/ou E2E) que simulem o problema original e validem a correção</critical>
 <critical>A tarefa NÃO está completa até que TODOS os bugs estejam corrigidos e TODOS os testes estejam passando com 100% de sucesso</critical>
@@ -11,7 +12,9 @@ Você é um assistente IA especializado em correção de bugs. Sua tarefa é ler
 - PRD: `./tasks/prd-[nome-funcionalidade]/prd.md`
 - TechSpec: `./tasks/prd-[nome-funcionalidade]/techspec.md`
 - Tasks: `./tasks/prd-[nome-funcionalidade]/tasks.md`
-- Regras do Projeto: @.claude/rules
+- Regras do Projeto: `AGENTS.md`
+- Skills do Projeto: `.agents/skills`
+- Design System: `DESIGN.md` para bugs de UI
 
 ## Etapas para Executar
 
@@ -20,7 +23,7 @@ Você é um assistente IA especializado em correção de bugs. Sua tarefa é ler
 - Ler o arquivo `bugs.md` e extrair TODOS os bugs documentados
 - Ler o PRD para entender os requisitos afetados por cada bug
 - Ler a TechSpec para entender as decisões técnicas relevantes
-- Revisar as regras do projeto para garantir conformidade nas correções
+- Revisar `AGENTS.md`, `DESIGN.md` quando aplicável e os `SKILL.md` necessários para garantir conformidade nas correções
 
 <critical>NÃO PULE ESTA ETAPA — Entender o contexto completo é fundamental para correções de qualidade</critical>
 
@@ -85,6 +88,8 @@ Para bugs que afetam a interface do usuário:
 - Verificar que TODOS passam com 100% de sucesso
 - Executar verificação de tipos: `bun run typecheck`
 
+Antes de executar, detecte os scripts reais do projeto. Se `bun run test` ou `bun run typecheck` não existirem, use os comandos equivalentes disponíveis e documente qualquer lacuna.
+
 <critical>A tarefa NÃO está completa se algum teste falhar</critical>
 
 ### 7. Atualização do bugs.md (Obrigatório)
@@ -136,7 +141,7 @@ Gerar um resumo final:
 ## Notas Importantes
 
 - Sempre leia o código-fonte antes de modificá-lo
-- Siga todos os padrões estabelecidos nas regras do projeto (@.claude/rules)
+- Siga todos os padrões estabelecidos em `AGENTS.md` e nas skills aplicáveis em `.agents/skills`
 - Priorize a resolução da causa raiz, não apenas os sintomas
 - Se um bug exigir mudanças arquiteturais significativas, documente a justificativa
 - Se descobrir novos bugs durante a correção, documente-os no bugs.md
