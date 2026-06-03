@@ -20,6 +20,7 @@ O ambiente local não possuía configuração Supabase disponível para executar
 
 - Variáveis `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` configuradas em `frontend/.env.local`.
 - Script de regressão `npm run qa:smoke` em `frontend/scripts/qa-authenticated-smoke.mjs`.
+- QA visual autenticado `npm run qa:visual` com screenshots em `tasks/prd-bodymetrics/evidence/`.
 - Testes unitários em `frontend/src/lib/supabase/config.test.ts` (guarda BLOQ-001).
 
 ### Evidência (2026-06-03)
@@ -33,11 +34,13 @@ O ambiente local não possuía configuração Supabase disponível para executar
 | Páginas autenticadas `/dashboard`, `/dashboard/perfil`, `/dashboard/exames`, `/dashboard/evolucao` | PASS |
 | Upload autenticado com `docs/bio-rayane.jpeg` | PASS (200, `needs_review`) |
 | GET do upload criado no smoke | PASS |
+| QA visual autenticado com screenshots | PASS (1/1 Playwright Chromium) |
 
 ### Testes de regressão
 
 - `frontend/src/lib/supabase/config.test.ts` — config ausente vs presente.
 - `npm run qa:smoke` — smoke autenticado 11/11 com `pnpm dev`, credenciais QA e fixture `docs/bio-rayane.jpeg`.
+- `npm run qa:visual` — navegação autenticada, upload de fixture real, tela de revisão e screenshots.
 
 ### Requisitos para reexecutar o E2E autenticado
 
@@ -52,4 +55,4 @@ Em seguida: `pnpm dev` + `npm run qa:smoke`.
 
 - **Status:** Corrigido (ambiente)
 - **Correção aplicada:** Configuração Supabase local + script/testes de regressão; não foi necessária alteração de lógica de produto para o bloqueio original.
-- **Testes de regressão:** `config.test.ts` + `qa:smoke` completo 11/11 com credenciais QA.
+- **Testes de regressão:** `config.test.ts` + `qa:smoke` completo 11/11 + `qa:visual` completo 1/1 com credenciais QA.

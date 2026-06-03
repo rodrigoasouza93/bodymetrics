@@ -6,7 +6,7 @@
 - Status: **APROVADO**
 - Total de Bugs/Bloqueios: 1
 - Bugs Corrigidos: 1 (BLOQ-001 — ambiente Supabase)
-- Testes de Regressão Criados: 2 (`config.test.ts`, `qa:smoke`)
+- Testes de Regressão Criados: 3 (`config.test.ts`, `qa:smoke`, `qa:visual`)
 
 ## Planejamento por item
 
@@ -18,7 +18,7 @@
 
 | ID | Severidade | Status | Correção | Testes Criados |
 | --- | --- | --- | --- | --- |
-| BLOQ-001 | Bloqueante | Corrigido | `.env.local` com URL e publishable key; smoke valida dev + redirect + Supabase Auth API. | `config.test.ts`, `npm run qa:smoke` |
+| BLOQ-001 | Bloqueante | Corrigido | `.env.local` com URL e publishable key; smoke e visual validam sessão, páginas autenticadas, upload e revisão. | `config.test.ts`, `npm run qa:smoke`, `npm run qa:visual` |
 
 ## Testes executados
 
@@ -26,14 +26,17 @@
 | --- | --- |
 | `npm run test` (frontend) | PASS — 28 arquivos, 99 testes |
 | `npm run lint` (frontend) | PASS |
+| `npm run typecheck` (frontend) | PASS |
+| `npm run test:coverage` (frontend) | PASS — statements 72.45%, branches 62.92%, functions 71.92%, lines 72.59% |
 | `npm run build` (frontend) | PASS |
 | `npm run qa:smoke` | PASS — 11/11 checks com Supabase real, sessão autenticada e upload de `docs/bio-rayane.jpeg` |
+| `npm run qa:visual` | PASS — 1/1 Playwright Chromium com screenshots |
+| `npm audit --audit-level=moderate` | PASS — 0 vulnerabilidades |
 
 ## Ressalvas
 
-- O smoke depende de `BODYMETRICS_QA_EMAIL` / `BODYMETRICS_QA_PASSWORD` e de `pnpm dev` ativo para reexecuções futuras.
-- A inspeção visual interativa com Browser/Playwright MCP não foi reexecutada nesta sessão porque a ferramenta local de browser não estava disponível.
+- Sem ressalvas pendentes.
 
 ## Conclusão
 
-O bloqueio original (ambiente sem Supabase) foi resolvido. A task 9.0 atende a causa raiz do BLOQ-001 com regressão automatizada, e o smoke autenticado completo passou com upload real de exame.
+O bloqueio original (ambiente sem Supabase) foi resolvido. A task 9.0 atende a causa raiz do BLOQ-001 com regressão automatizada; smoke e QA visual autenticados passaram com upload real de exame.

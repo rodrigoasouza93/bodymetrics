@@ -12,7 +12,22 @@ export default defineConfig({
     },
   },
   test: {
+    coverage: {
+      exclude: [
+        ".next/**",
+        "app/**",
+        "next-env.d.ts",
+        "playwright.config.ts",
+        "src/types/database.ts",
+        "tests/e2e/**",
+      ],
+      include: ["src/**/*.{ts,tsx}"],
+      provider: "v8",
+      reporter: ["text", "html"],
+    },
     environment: "node",
+    exclude: ["node_modules/**", "tests/e2e/**"],
     globals: false,
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
   },
 });

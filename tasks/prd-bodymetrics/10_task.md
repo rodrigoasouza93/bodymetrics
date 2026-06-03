@@ -57,8 +57,9 @@ Referenciar `execute_review.md` integralmente. Esta task não implementa produto
 ## Testes da tarefa
 
 - [x] Execução da suíte de testes configurada no projeto.
-- [x] Execução de coverage quando script existir. Não há script de coverage configurado em `frontend/package.json`; lacuna documentada em `codereview.md`.
+- [x] Execução de coverage quando script existir. `npm run test:coverage` passou com provider v8.
 - [x] Execução de lint/build/typecheck quando scripts existirem.
+- [x] Execução de QA visual autenticado. `npm run qa:visual` passou com screenshots.
 
 ## Arquivos relevantes
 
