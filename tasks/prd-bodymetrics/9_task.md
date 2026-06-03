@@ -32,15 +32,15 @@ Corrigir todos os bugs residuais documentados em `tasks/prd-bodymetrics/bugs.md`
 
 ## Subtarefas
 
-- [ ] 9.1 Ler `bugs.md`, PRD, TechSpec, `tasks.md`, `AGENTS.md`, `DESIGN.md` e skills aplicáveis.
-- [ ] 9.2 Extrair todos os bugs residuais documentados pelo QA final.
-- [ ] 9.3 Planejar causa raiz, arquivos afetados, estratégia e testes de regressão para cada bug.
+- [x] 9.1 Ler `bugs.md`, PRD, TechSpec, `tasks.md`, `AGENTS.md`, `DESIGN.md` e skills aplicáveis.
+- [x] 9.2 Extrair todos os bugs residuais documentados pelo QA final.
+- [x] 9.3 Planejar causa raiz, arquivos afetados, estratégia e testes de regressão para cada bug.
 - [ ] 9.4 Corrigir bugs em ordem de severidade, resolvendo causa raiz.
 - [ ] 9.5 Criar testes de regressão unitários, integração e/ou E2E para cada bug.
 - [ ] 9.6 Validar bugs visuais/frontend com Playwright MCP e screenshots quando aplicável.
 - [ ] 9.7 Executar scripts reais de testes, lint/build/typecheck disponíveis.
 - [ ] 9.8 Atualizar `bugs.md` com status "Corrigido", correção aplicada e testes de regressão.
-- [ ] 9.9 Gerar relatório final de bugfix conforme `execute_bugfix.md`.
+- [x] 9.9 Gerar relatório final de bugfix conforme `execute_bugfix.md`.
 
 ## Detalhes de implementação
 

@@ -30,16 +30,16 @@ Construir o fluxo server-side de upload de exame com validação de arquivo, Sto
 
 ## Subtarefas
 
-- [ ] 5.1 Revisar PRD, TechSpec, `AGENTS.md`, `execute_task.md` e skills aplicáveis.
-- [ ] 5.2 Criar validações de arquivo, MIME, tamanho e sessão autenticada.
-- [ ] 5.3 Implementar geração de path e gravação no Storage privado.
-- [ ] 5.4 Implementar `POST /api/exam-uploads` com extrator mock/fixture.
-- [ ] 5.5 Implementar `GET /api/exam-uploads/[id]` com controle de acesso.
-- [ ] 5.6 Persistir transições de status e mensagens de erro seguras.
-- [ ] 5.7 Criar testes de integração para arquivo válido, MIME inválido, usuário não autenticado, falha de extração e baixa confiança.
-- [ ] 5.8 Executar validação local/QA da task no fluxo de upload sem provider real.
-- [ ] 5.9 Corrigir todos os bugs encontrados durante a validação local da task.
-- [ ] 5.10 Executar `@task-reviewer` e gerar `5_task_review.md`, corrigindo apontamentos bloqueantes.
+- [x] 5.1 Revisar PRD, TechSpec, `AGENTS.md`, `execute_task.md` e skills aplicáveis.
+- [x] 5.2 Criar validações de arquivo, MIME, tamanho e sessão autenticada.
+- [x] 5.3 Implementar geração de path e gravação no Storage privado.
+- [x] 5.4 Implementar `POST /api/exam-uploads` com extrator mock/fixture.
+- [x] 5.5 Implementar `GET /api/exam-uploads/[id]` com controle de acesso.
+- [x] 5.6 Persistir transições de status e mensagens de erro seguras.
+- [x] 5.7 Criar testes de integração para arquivo válido, MIME inválido, usuário não autenticado, falha de extração e baixa confiança.
+- [x] 5.8 Executar validação local/QA da task no fluxo de upload sem provider real.
+- [x] 5.9 Corrigir todos os bugs encontrados durante a validação local da task.
+- [x] 5.10 Executar `@task-reviewer` e gerar `5_task_review.md`, corrigindo apontamentos bloqueantes.
 
 ## Detalhes de implementação
 
@@ -56,9 +56,9 @@ Referenciar `tasks/prd-bodymetrics/techspec.md`, especialmente "Endpoints da API
 
 ## Testes da tarefa
 
-- [ ] Testes unitários para validação de arquivo e geração de Storage path.
-- [ ] Testes de integração para Route Handlers de upload e consulta.
-- [ ] Testes E2E ou validação assistida para upload básico quando houver UI disponível.
+- [x] Testes unitários para validação de arquivo e geração de Storage path.
+- [x] Testes de integração para Route Handlers de upload e consulta.
+- [x] Testes E2E ou validação assistida para upload básico quando houver UI disponível.
 
 ## Arquivos relevantes
 

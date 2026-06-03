@@ -30,16 +30,16 @@ Implementar o adaptador server-only para Vertex AI/Gemini atrás do contrato `Ex
 
 ## Subtarefas
 
-- [ ] 6.1 Revisar PRD, TechSpec, `AGENTS.md`, `execute_task.md`, `context7` e skills aplicáveis.
-- [ ] 6.2 Consultar documentação atualizada de Vertex AI/Gemini para entrada multimodal e JSON schema.
-- [ ] 6.3 Criar configuração server-only e validação de env vars do provider.
-- [ ] 6.4 Implementar adaptador Vertex AI/Gemini para imagem/PDF conforme contrato `ExamExtractionService`.
-- [ ] 6.5 Implementar prompt/schema, parser de resposta e cálculo de confiança por campo.
-- [ ] 6.6 Mapear falhas de provider para mensagens seguras e status persistível.
-- [ ] 6.7 Criar testes unitários com mocks e fixtures dos documentos em `docs`.
-- [ ] 6.8 Executar validação local/QA da task com fixtures, sem depender de dados sensíveis em logs.
-- [ ] 6.9 Corrigir todos os bugs encontrados durante a validação local da task.
-- [ ] 6.10 Executar `@task-reviewer` e gerar `6_task_review.md`, corrigindo apontamentos bloqueantes.
+- [x] 6.1 Revisar PRD, TechSpec, `AGENTS.md`, `execute_task.md`, `context7` e skills aplicáveis.
+- [x] 6.2 Consultar documentação atualizada de Vertex AI/Gemini para entrada multimodal e JSON schema.
+- [x] 6.3 Criar configuração server-only e validação de env vars do provider.
+- [x] 6.4 Implementar adaptador Vertex AI/Gemini para imagem/PDF conforme contrato `ExamExtractionService`.
+- [x] 6.5 Implementar prompt/schema, parser de resposta e cálculo de confiança por campo.
+- [x] 6.6 Mapear falhas de provider para mensagens seguras e status persistível.
+- [x] 6.7 Criar testes unitários com mocks e fixtures dos documentos em `docs`.
+- [x] 6.8 Executar validação local/QA da task com fixtures, sem depender de dados sensíveis em logs.
+- [x] 6.9 Corrigir todos os bugs encontrados durante a validação local da task.
+- [x] 6.10 Executar `@task-reviewer` e gerar `6_task_review.md`, corrigindo apontamentos bloqueantes.
 
 ## Detalhes de implementação
 
@@ -56,9 +56,9 @@ Referenciar `tasks/prd-bodymetrics/techspec.md`, especialmente "Principais inter
 
 ## Testes da tarefa
 
-- [ ] Testes unitários para parser, confidence, configuração e tratamento de falhas.
-- [ ] Testes de integração do serviço de extração com provider mockado.
-- [ ] Testes E2E não obrigatórios nesta task.
+- [x] Testes unitários para parser, confidence, configuração e tratamento de falhas.
+- [x] Testes de integração do serviço de extração com provider mockado.
+- [x] Testes E2E não obrigatórios nesta task.
 
 ## Arquivos relevantes
 

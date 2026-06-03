@@ -28,16 +28,16 @@ Criar a camada de domínio para exames de bioimpedância, incluindo schemas, nor
 
 ## Subtarefas
 
-- [ ] 4.1 Revisar PRD, TechSpec, `AGENTS.md`, `execute_task.md` e skills aplicáveis.
-- [ ] 4.2 Criar tipos e schemas para campos extraídos, exames confirmados, issues e segmentação.
-- [ ] 4.3 Implementar normalizadores de números, datas, unidades e percentuais.
-- [ ] 4.4 Implementar contratos e repositórios de exames conforme TechSpec.
-- [ ] 4.5 Implementar cálculo de comparação e trend points.
-- [ ] 4.6 Implementar geração determinística de insights informativos e disclaimer obrigatório.
-- [ ] 4.7 Criar testes unitários para normalização, comparação, métricas ausentes e insights.
-- [ ] 4.8 Executar validação local/QA da task sobre os cenários de domínio.
-- [ ] 4.9 Corrigir todos os bugs encontrados durante a validação local da task.
-- [ ] 4.10 Executar `@task-reviewer` e gerar `4_task_review.md`, corrigindo apontamentos bloqueantes.
+- [x] 4.1 Revisar PRD, TechSpec, `AGENTS.md`, `execute_task.md` e skills aplicáveis.
+- [x] 4.2 Criar tipos e schemas para campos extraídos, exames confirmados, issues e segmentação.
+- [x] 4.3 Implementar normalizadores de números, datas, unidades e percentuais.
+- [x] 4.4 Implementar contratos e repositórios de exames conforme TechSpec.
+- [x] 4.5 Implementar cálculo de comparação e trend points.
+- [x] 4.6 Implementar geração determinística de insights informativos e disclaimer obrigatório.
+- [x] 4.7 Criar testes unitários para normalização, comparação, métricas ausentes e insights.
+- [x] 4.8 Executar validação local/QA da task sobre os cenários de domínio.
+- [x] 4.9 Corrigir todos os bugs encontrados durante a validação local da task.
+- [x] 4.10 Executar `@task-reviewer` e gerar `4_task_review.md`, corrigindo apontamentos bloqueantes.
 
 ## Detalhes de implementação
 
@@ -54,9 +54,9 @@ Referenciar `tasks/prd-bodymetrics/techspec.md`, especialmente "Principais inter
 
 ## Testes da tarefa
 
-- [ ] Testes unitários de normalizadores, schemas, comparação e insights.
-- [ ] Testes de integração de repositórios com mocks ou Supabase local quando configurado.
-- [ ] Testes E2E não obrigatórios nesta task.
+- [x] Testes unitários de normalizadores, schemas, comparação e insights.
+- [x] Testes de integração de repositórios com mocks ou Supabase local quando configurado.
+- [x] Testes E2E não obrigatórios nesta task.
 
 ## Arquivos relevantes
 

@@ -4,6 +4,10 @@ import {
   createServerSupabaseClient,
   getCurrentSession,
 } from "@/src/lib/supabase/server-client";
+import { ExamHistoryPanel } from "@/src/features/exams/components/exam-history-panel";
+import { ExamTrendsPanel } from "@/src/features/exams/components/exam-trends-panel";
+import { ExamUploadPanel } from "@/src/features/exams/components/exam-upload-panel";
+import { createExamRepository } from "@/src/features/exams/data/exam-repository";
 import { updateProfile } from "@/src/features/profile/actions/profile-actions";
 import { ProfileForm } from "@/src/features/profile/components/profile-form";
 import { getProfileByUserId } from "@/src/features/profile/data/profile-repository";
@@ -12,13 +16,20 @@ import { getProfileFormValuesFromRow } from "@/src/features/profile/lib/profile-
 export default async function DashboardPage() {
   const session = await getCurrentSession();
   const user = session?.user ?? null;
+  const client = createServerSupabaseClient();
   const profile = session
     ? await getProfileByUserId({
         accessToken: session.accessToken,
-        client: createServerSupabaseClient(),
+        client,
         userId: session.user.id,
       })
     : null;
+  const exams = session
+    ? await createExamRepository({
+        accessToken: session.accessToken,
+        client,
+      }).listConfirmedExams(session.user.id)
+    : [];
   const profileValues = getProfileFormValuesFromRow(profile);
   const hasProfile = Boolean(profile);
 
@@ -66,6 +77,13 @@ export default async function DashboardPage() {
           <div className="rounded-lg border border-hairline bg-surface-soft p-6 shadow-sm md:p-8">
             <ProfileForm action={updateProfile} initialValues={profileValues} />
           </div>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div className="grid gap-6">
+            <ExamUploadPanel />
+            <ExamHistoryPanel exams={exams} />
+          </div>
+          <ExamTrendsPanel exams={exams} />
         </div>
       </section>
     </main>

@@ -36,17 +36,17 @@ Implementar a experiência autenticada principal do BodyMetrics: upload visual, 
 
 ## Subtarefas
 
-- [ ] 7.1 Revisar PRD, TechSpec, `AGENTS.md`, `DESIGN.md`, `execute_task.md` e skills aplicáveis.
-- [ ] 7.2 Construir UI de upload com estados vazio, selecionado, loading, erro e sucesso.
-- [ ] 7.3 Construir tela de revisão editável com unidades, issues por campo e baixa confiança destacada.
-- [ ] 7.4 Implementar Server Actions `confirmExamUpload`, `updateExam` e `cancelExamUpload`.
-- [ ] 7.5 Construir histórico cronológico, detalhe de exame e edição de exame salvo.
-- [ ] 7.6 Construir gráficos de evolução e alternativa textual/tabela acessível.
-- [ ] 7.7 Exibir comparação entre exames e insights informativos com disclaimer obrigatório.
-- [ ] 7.8 Criar testes unitários, integração, componentes e E2E aplicáveis aos fluxos principais.
-- [ ] 7.9 Executar validação local/QA da task, incluindo teclado, estados de erro e responsividade.
-- [ ] 7.10 Corrigir todos os bugs encontrados durante a validação local da task.
-- [ ] 7.11 Executar `@task-reviewer` e gerar `7_task_review.md`, corrigindo apontamentos bloqueantes.
+- [x] 7.1 Revisar PRD, TechSpec, `AGENTS.md`, `DESIGN.md`, `execute_task.md` e skills aplicáveis.
+- [x] 7.2 Construir UI de upload com estados vazio, selecionado, loading, erro e sucesso.
+- [x] 7.3 Construir tela de revisão editável com unidades, issues por campo e baixa confiança destacada.
+- [x] 7.4 Implementar Server Actions `confirmExamUpload`, `updateExam` e `cancelExamUpload`.
+- [x] 7.5 Construir histórico cronológico, detalhe de exame e edição de exame salvo.
+- [x] 7.6 Construir gráficos de evolução e alternativa textual/tabela acessível.
+- [x] 7.7 Exibir comparação entre exames e insights informativos com disclaimer obrigatório.
+- [x] 7.8 Criar testes unitários, integração, componentes e E2E aplicáveis aos fluxos principais.
+- [x] 7.9 Executar validação local/QA da task, incluindo teclado, estados de erro e responsividade.
+- [x] 7.10 Corrigir todos os bugs encontrados durante a validação local da task.
+- [x] 7.11 Executar `@task-reviewer` e gerar `7_task_review.md`, corrigindo apontamentos bloqueantes.
 
 ## Detalhes de implementação
 
@@ -63,9 +63,9 @@ Referenciar `tasks/prd-bodymetrics/techspec.md`, especialmente "Experiência do 
 
 ## Testes da tarefa
 
-- [ ] Testes unitários para derivação de estados visuais, mapeamento de issues e form state.
-- [ ] Testes de integração para confirmação, cancelamento e edição de exame.
-- [ ] Testes E2E para upload, revisão com correção, confirmação, histórico, detalhe e gráficos.
+- [x] Testes unitários para derivação de estados visuais, mapeamento de issues e form state.
+- [x] Testes de integração para confirmação, cancelamento e edição de exame.
+- [x] Testes E2E para upload, revisão com correção, confirmação, histórico, detalhe e gráficos.
 
 ## Arquivos relevantes
 
