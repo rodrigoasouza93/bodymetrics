@@ -3,7 +3,7 @@
 ## Resumo
 
 - Data: 2026-06-03
-- Status: **APROVADO COM RESSALVAS**
+- Status: **APROVADO**
 - Total de Bugs/Bloqueios: 1
 - Bugs Corrigidos: 1 (BLOQ-001 — ambiente Supabase)
 - Testes de Regressão Criados: 2 (`config.test.ts`, `qa:smoke`)
@@ -24,16 +24,16 @@
 
 | Comando | Resultado |
 | --- | --- |
-| `npm run test` (frontend) | PASS — 25 arquivos, 83 testes |
+| `npm run test` (frontend) | PASS — 28 arquivos, 99 testes |
 | `npm run lint` (frontend) | PASS |
-| `npm run build` (frontend) | PASS (rodada anterior nesta sessão) |
-| `npm run qa:smoke` | PARCIAL — 3/4 checks antes de auth; auth bloqueado por rate limit de e-mail no Supabase |
+| `npm run build` (frontend) | PASS |
+| `npm run qa:smoke` | PASS — 11/11 checks com Supabase real, sessão autenticada e upload de `docs/bio-rayane.jpeg` |
 
 ## Ressalvas
 
-- Fluxos autenticados completos no smoke (perfil, upload, GET upload) dependem de `BODYMETRICS_QA_EMAIL` / `BODYMETRICS_QA_PASSWORD` com usuário já criado, ou de aguardar o rate limit do Auth.
-- Recomenda-se reexecutar `npm run qa:smoke` após definir credenciais de QA.
+- O smoke depende de `BODYMETRICS_QA_EMAIL` / `BODYMETRICS_QA_PASSWORD` e de `pnpm dev` ativo para reexecuções futuras.
+- A inspeção visual interativa com Browser/Playwright MCP não foi reexecutada nesta sessão porque a ferramenta local de browser não estava disponível.
 
 ## Conclusão
 
-O bloqueio original (ambiente sem Supabase) foi resolvido. A task 9.0 atende a causa raiz do BLOQ-001 com regressão automatizada; o E2E autenticado de ponta a ponta fica pendente apenas de credenciais de teste estáveis ou reset do rate limit do Supabase Auth.
+O bloqueio original (ambiente sem Supabase) foi resolvido. A task 9.0 atende a causa raiz do BLOQ-001 com regressão automatizada, e o smoke autenticado completo passou com upload real de exame.

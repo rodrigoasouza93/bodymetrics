@@ -32,15 +32,15 @@ Executar o code review final da funcionalidade BodyMetrics com `@code-reviewer`,
 
 ## Subtarefas
 
-- [ ] 10.1 Ler TechSpec, `tasks.md`, task reviews individuais, `qa.md`, `bugs.md`, `AGENTS.md`, `DESIGN.md` e skills aplicáveis.
-- [ ] 10.2 Executar comandos git obrigatórios de análise de mudanças conforme `execute_review.md`.
-- [ ] 10.3 Revisar arquivos modificados linha a linha.
-- [ ] 10.4 Verificar conformidade com rules e skills do projeto.
-- [ ] 10.5 Verificar aderência à TechSpec e completude das tasks.
-- [ ] 10.6 Verificar qualidade de testes, cobertura e regressões criadas.
-- [ ] 10.7 Executar scripts reais de testes, lint/build/typecheck/coverage disponíveis.
-- [ ] 10.8 Identificar problemas por severidade com arquivo, linha e sugestão.
-- [ ] 10.9 Gerar `codereview.md` com status APROVADO, APROVADO COM RESSALVAS ou REPROVADO.
+- [x] 10.1 Ler TechSpec, `tasks.md`, task reviews individuais, `qa.md`, `bugs.md`, `AGENTS.md`, `DESIGN.md` e skills aplicáveis.
+- [x] 10.2 Executar comandos git obrigatórios de análise de mudanças conforme `execute_review.md`.
+- [x] 10.3 Revisar arquivos modificados linha a linha.
+- [x] 10.4 Verificar conformidade com rules e skills do projeto.
+- [x] 10.5 Verificar aderência à TechSpec e completude das tasks.
+- [x] 10.6 Verificar qualidade de testes, cobertura e regressões criadas.
+- [x] 10.7 Executar scripts reais de testes, lint/build/typecheck/coverage disponíveis.
+- [x] 10.8 Identificar problemas por severidade com arquivo, linha e sugestão.
+- [x] 10.9 Gerar `codereview.md` com status APROVADO, APROVADO COM RESSALVAS ou REPROVADO.
 
 ## Detalhes de implementação
 
@@ -56,9 +56,9 @@ Referenciar `execute_review.md` integralmente. Esta task não implementa produto
 
 ## Testes da tarefa
 
-- [ ] Execução da suíte de testes configurada no projeto.
-- [ ] Execução de coverage quando script existir.
-- [ ] Execução de lint/build/typecheck quando scripts existirem.
+- [x] Execução da suíte de testes configurada no projeto.
+- [x] Execução de coverage quando script existir. Não há script de coverage configurado em `frontend/package.json`; lacuna documentada em `codereview.md`.
+- [x] Execução de lint/build/typecheck quando scripts existirem.
 
 ## Arquivos relevantes
 

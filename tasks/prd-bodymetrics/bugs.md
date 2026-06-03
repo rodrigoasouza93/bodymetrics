@@ -4,7 +4,7 @@
 
 - Data: 2026-06-03
 - Origem: QA final da task 8.0; revalidação na task 9.0
-- Status geral: Parcialmente resolvido
+- Status geral: Corrigido e revalidado
 
 ## BLOQ-001 - Ambiente Supabase ausente impede QA E2E obrigatório
 
@@ -29,14 +29,17 @@ O ambiente local não possuía configuração Supabase disponível para executar
 | Supabase env no smoke | PASS |
 | `http://localhost:3000/login` com `pnpm dev` | PASS (200) |
 | `/dashboard` sem sessão | PASS (307 → login) |
-| Cadastro automático no smoke | BLOQUEADO temporariamente por `over_email_send_rate_limit` no Auth |
+| Auth sign-in com usuário QA | PASS |
+| Páginas autenticadas `/dashboard`, `/dashboard/perfil`, `/dashboard/exames`, `/dashboard/evolucao` | PASS |
+| Upload autenticado com `docs/bio-rayane.jpeg` | PASS (200, `needs_review`) |
+| GET do upload criado no smoke | PASS |
 
 ### Testes de regressão
 
 - `frontend/src/lib/supabase/config.test.ts` — config ausente vs presente.
-- `npm run qa:smoke` — smoke autenticado (requer `pnpm dev` + credenciais de QA para fluxo completo).
+- `npm run qa:smoke` — smoke autenticado 11/11 com `pnpm dev`, credenciais QA e fixture `docs/bio-rayane.jpeg`.
 
-### Próximo passo para E2E autenticado completo
+### Requisitos para reexecutar o E2E autenticado
 
 Credenciais de QA configuradas em `frontend/.env.local`:
 
@@ -45,10 +48,8 @@ Credenciais de QA configuradas em `frontend/.env.local`:
 
 Em seguida: `pnpm dev` + `npm run qa:smoke`.
 
-Opcional no Supabase Dashboard: desabilitar confirmação de e-mail em Auth para ambiente de desenvolvimento, ou aguardar reset do rate limit de envio de e-mail.
-
 ### Análise de bugfix
 
 - **Status:** Corrigido (ambiente)
 - **Correção aplicada:** Configuração Supabase local + script/testes de regressão; não foi necessária alteração de lógica de produto para o bloqueio original.
-- **Testes de regressão:** `config.test.ts` + `qa:smoke` (parcial sem credenciais QA dedicadas).
+- **Testes de regressão:** `config.test.ts` + `qa:smoke` completo 11/11 com credenciais QA.

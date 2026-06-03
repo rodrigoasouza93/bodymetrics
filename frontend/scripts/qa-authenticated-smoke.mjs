@@ -2,6 +2,8 @@
  * Smoke E2E autenticado para regressão do BLOQ-001 (Supabase + sessão + upload).
  * Uso: npm run qa:smoke (com `npm run dev` em outro terminal).
  */
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { loadEnvLocal } from "./load-env-local.mjs";
 
 loadEnvLocal();
@@ -20,8 +22,7 @@ const QA_PASSWORD = process.env.BODYMETRICS_QA_PASSWORD ?? "BodyMetricsQa!2026";
 const ACCESS_COOKIE = "bm-access-token";
 const REFRESH_COOKIE = "bm-refresh-token";
 
-const MINIMAL_PNG_BASE64 =
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+const EXAM_FIXTURE_PATH = resolve("..", "docs", "bio-rayane.jpeg");
 
 const results = [];
 
@@ -191,12 +192,12 @@ const runSmoke = async () => {
     record(`${route}`, page.status === 200, `status ${page.status}`);
   }
 
-  const pngBytes = Buffer.from(MINIMAL_PNG_BASE64, "base64");
+  const examBytes = await readFile(EXAM_FIXTURE_PATH);
   const form = new FormData();
   form.append(
     "file",
-    new Blob([pngBytes], { type: "image/png" }),
-    "qa-smoke.png",
+    new Blob([examBytes], { type: "image/jpeg" }),
+    "bio-rayane.jpeg",
   );
 
   const upload = await fetch(`${BASE_URL}/api/exam-uploads`, {

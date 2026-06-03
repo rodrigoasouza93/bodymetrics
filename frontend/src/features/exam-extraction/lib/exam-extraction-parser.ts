@@ -1,5 +1,8 @@
 import type { Json } from "@/src/types/database";
-import type { BodyCompositionExamInput } from "@/src/features/exams/lib/exam-types";
+import type {
+  BodyCompositionExamInput,
+  SegmentalAnalysisInput,
+} from "@/src/features/exams/lib/exam-types";
 import {
   createExtractedField,
   getExtractionFieldIssues,
@@ -146,18 +149,9 @@ const calculateOverallConfidence = (fields: ExtractedExamFields) => {
     }
 
     if (fieldName === "segmentalAnalyses") {
-      const analyses = field.value;
+      const analyses = field.value as readonly SegmentalAnalysisInput[];
 
-      if (
-        analyses.length === 0 ||
-        !analyses.some(
-          (analysis) =>
-            analysis.fatMassKg !== null ||
-            analysis.fatMassPercentage !== null ||
-            analysis.leanMassKg !== null ||
-            analysis.leanMassPercentage !== null,
-        )
-      ) {
+      if (analyses.length === 0 || !hasSegmentalAnalysisValues(analyses)) {
         return [];
       }
     }
@@ -174,6 +168,17 @@ const calculateOverallConfidence = (fields: ExtractedExamFields) => {
       confidences.length,
   );
 };
+
+const hasSegmentalAnalysisValues = (
+  analyses: readonly SegmentalAnalysisInput[],
+) =>
+  analyses.some(
+    (analysis) =>
+      analysis.fatMassKg !== null ||
+      analysis.fatMassPercentage !== null ||
+      analysis.leanMassKg !== null ||
+      analysis.leanMassPercentage !== null,
+  );
 
 const calculateSegmentalConfidence = (
   analyses: readonly ProviderSegmentalAnalysis[] | undefined,

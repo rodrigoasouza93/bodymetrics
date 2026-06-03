@@ -59,8 +59,8 @@ Referenciar `tasks/prd-bodymetrics/techspec.md`, especialmente as seções "Arqu
 ## Testes da tarefa
 
 - [x] Testes unitários de helpers/factories e validações do fluxo de auth quando aplicável.
-- [ ] Testes de integração para ações de login/cadastro/logout com Supabase mockado. Não executado nesta task por ausência de Vitest/Supabase SDK local; coberto parcialmente por validação unitária de helpers e build.
-- [ ] Testes E2E ou validação manual assistida para cadastro, login, logout e proteção de rota. Não executado nesta task por ausência de ambiente Supabase configurado.
+- [x] Testes de integração para ações de login/cadastro/logout com Supabase mockado. Coberto por `frontend/src/features/auth/actions/auth-actions.test.ts`.
+- [x] Testes E2E ou validação manual assistida para cadastro, login, logout e proteção de rota. Coberto por `npm run qa:smoke` com Supabase real e por `route-guards.test.ts`.
 
 ## Arquivos relevantes
 

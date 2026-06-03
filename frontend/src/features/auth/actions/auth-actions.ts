@@ -14,6 +14,10 @@ export interface AuthFormState {
   readonly success?: string;
 }
 
+interface SignUpRedirectState {
+  readonly redirectToDashboard: true;
+}
+
 const getRequiredString = (formData: FormData, fieldName: string) => {
   const value = formData.get(fieldName);
 
@@ -71,6 +75,22 @@ export const signUpWithEmail = async (
     return { error: validationError };
   }
 
+  const signUpState = await createSignUpAuthSession({ email, password });
+
+  if ("redirectToDashboard" in signUpState) {
+    redirect("/dashboard");
+  }
+
+  return signUpState;
+};
+
+const createSignUpAuthSession = async ({
+  email,
+  password,
+}: {
+  readonly email: string;
+  readonly password: string;
+}): Promise<AuthFormState | SignUpRedirectState> => {
   try {
     const client = createServerSupabaseClient();
     const response = await client.request<SupabaseAuthResponse>(
@@ -83,13 +103,8 @@ export const signUpWithEmail = async (
 
     if (response.access_token && response.refresh_token) {
       await saveAuthSession(response);
-      redirect("/dashboard");
+      return { redirectToDashboard: true };
     }
-
-    return {
-      success:
-        "Cadastro criado. Confira seu email se o projeto exigir confirmação antes do login.",
-    };
   } catch (error) {
     return {
       error:
@@ -98,6 +113,11 @@ export const signUpWithEmail = async (
           : "Não foi possível criar a conta.",
     };
   }
+
+  return {
+    success:
+      "Cadastro criado. Confira seu email se o projeto exigir confirmação antes do login.",
+  };
 };
 
 export const signOut = async () => {
