@@ -12,6 +12,8 @@ describe("route guards", () => {
   it("keeps auth routes public", () => {
     expect(isProtectedRoute("/login")).toBe(false);
     expect(isProtectedRoute("/sign-up")).toBe(false);
+    expect(isProtectedRoute("/auth/confirm")).toBe(false);
+    expect(isProtectedRoute("/auth/reset-password")).toBe(false);
   });
 
   it("requires auth for protected routes without an access token", () => {

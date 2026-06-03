@@ -19,6 +19,6 @@ export interface SupabaseRequestOptions {
   readonly accessToken?: string;
   readonly body?: unknown;
   readonly headers?: Record<string, string>;
-  readonly method?: "DELETE" | "GET" | "PATCH" | "POST";
+  readonly method?: "DELETE" | "GET" | "PATCH" | "POST" | "PUT";
   readonly serviceRole?: boolean;
 }

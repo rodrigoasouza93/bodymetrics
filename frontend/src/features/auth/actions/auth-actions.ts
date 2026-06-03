@@ -4,10 +4,16 @@ import { redirect } from "next/navigation";
 import {
   clearAuthSession,
   createServerSupabaseClient,
+  getCurrentSession,
   saveAuthSession,
 } from "@/src/lib/supabase/server-client";
 import type { SupabaseAuthResponse } from "@/src/lib/supabase/types";
-import { validateCredentials } from "../lib/auth-validation";
+import { getPublicAuthRedirectUrl } from "../lib/auth-redirect-url";
+import {
+  validateCredentials,
+  validateEmail,
+  validatePassword,
+} from "../lib/auth-validation";
 
 export interface AuthFormState {
   readonly error?: string;
@@ -82,6 +88,84 @@ export const signUpWithEmail = async (
   }
 
   return signUpState;
+};
+
+export const requestPasswordReset = async (
+  _previousState: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> => {
+  const email = getRequiredString(formData, "email");
+  const validationError = validateEmail(email);
+
+  if (validationError) {
+    return { error: validationError };
+  }
+
+  try {
+    const client = createServerSupabaseClient();
+    const redirectUrl = await getPublicAuthRedirectUrl("/auth/reset-password");
+
+    await client.request(
+      `/auth/v1/recover?redirect_to=${encodeURIComponent(redirectUrl)}`,
+      {
+        body: { email },
+        method: "POST",
+      },
+    );
+  } catch (error) {
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Não foi possível enviar o email de recuperação.",
+    };
+  }
+
+  return {
+    success:
+      "Enviamos as instruções para o email informado, caso ele esteja cadastrado.",
+  };
+};
+
+export const updatePassword = async (
+  _previousState: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> => {
+  const password = getRequiredString(formData, "password");
+  const validationError = validatePassword(password);
+
+  if (validationError) {
+    return { error: validationError };
+  }
+
+  const session = await getCurrentSession();
+
+  if (!session) {
+    return {
+      error:
+        "Abra novamente o link de recuperação enviado por email antes de trocar a senha.",
+    };
+  }
+
+  try {
+    const client = createServerSupabaseClient();
+
+    await client.request("/auth/v1/user", {
+      accessToken: session.accessToken,
+      body: { password },
+      method: "PUT",
+    });
+  } catch (error) {
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Não foi possível atualizar a senha.",
+    };
+  }
+
+  await clearAuthSession();
+  redirect("/login?password=updated");
 };
 
 const createSignUpAuthSession = async ({

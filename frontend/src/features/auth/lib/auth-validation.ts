@@ -1,12 +1,20 @@
 export const MIN_PASSWORD_LENGTH = 6;
 
-export const validateCredentials = (email: string, password: string) => {
-  if (!email || !password) {
-    return "Informe email e senha.";
+export const validateEmail = (email: string) => {
+  if (!email) {
+    return "Informe o email.";
   }
 
   if (!email.includes("@")) {
     return "Informe um email válido.";
+  }
+
+  return null;
+};
+
+export const validatePassword = (password: string) => {
+  if (!password) {
+    return "Informe a senha.";
   }
 
   if (password.length < MIN_PASSWORD_LENGTH) {
@@ -14,4 +22,12 @@ export const validateCredentials = (email: string, password: string) => {
   }
 
   return null;
+};
+
+export const validateCredentials = (email: string, password: string) => {
+  if (!email || !password) {
+    return "Informe email e senha.";
+  }
+
+  return validateEmail(email) ?? validatePassword(password);
 };

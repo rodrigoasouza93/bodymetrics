@@ -15,18 +15,24 @@ interface AuthFormProps {
   readonly alternateHref: string;
   readonly alternateLabel: string;
   readonly buttonLabel: string;
+  readonly initialState?: AuthFormState;
   readonly passwordAutoComplete: "current-password" | "new-password";
+  readonly passwordHelpHref?: string;
+  readonly passwordHelpLabel?: string;
   readonly title: string;
 }
 
-const initialState: AuthFormState = {};
+const defaultInitialState: AuthFormState = {};
 
 export function AuthForm({
   action,
   alternateHref,
   alternateLabel,
   buttonLabel,
+  initialState = defaultInitialState,
   passwordAutoComplete,
+  passwordHelpHref,
+  passwordHelpLabel,
   title,
 }: AuthFormProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
@@ -60,6 +66,15 @@ export function AuthForm({
         placeholder="No mínimo 6 caracteres"
         type="password"
       />
+
+      {passwordHelpHref && passwordHelpLabel ? (
+        <Link
+          className="min-h-11 inline-flex w-fit items-center text-sm font-medium text-primary hover:text-primary-active"
+          href={passwordHelpHref}
+        >
+          {passwordHelpLabel}
+        </Link>
+      ) : null}
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <Button disabled={isPending} type="submit">
