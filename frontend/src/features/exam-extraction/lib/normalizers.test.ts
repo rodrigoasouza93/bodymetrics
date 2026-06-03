@@ -31,4 +31,12 @@ describe("exam extraction normalizers", () => {
     );
     expect(normalizeExamDate("31/02/2026")).toBeNull();
   });
+
+  it("normalizes InBody header date and time formats", () => {
+    expect(normalizeExamDate("20.05.2026. 15:51")).toBe(
+      "2026-05-20T15:51:00.000Z",
+    );
+    expect(normalizeExamDate("20.05.2026.")).toBe("2026-05-20T00:00:00.000Z");
+    expect(normalizeExamDate("20.05.2026")).toBe("2026-05-20T00:00:00.000Z");
+  });
 });

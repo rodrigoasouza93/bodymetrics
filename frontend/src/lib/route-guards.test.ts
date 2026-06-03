@@ -4,7 +4,9 @@ import { isProtectedRoute, shouldRequireAuthSession } from "./route-guards.ts";
 describe("route guards", () => {
   it("marks dashboard routes as protected", () => {
     expect(isProtectedRoute("/dashboard")).toBe(true);
-    expect(isProtectedRoute("/dashboard/exams")).toBe(true);
+    expect(isProtectedRoute("/dashboard/exames")).toBe(true);
+    expect(isProtectedRoute("/dashboard/evolucao")).toBe(true);
+    expect(isProtectedRoute("/dashboard/perfil")).toBe(true);
   });
 
   it("keeps auth routes public", () => {

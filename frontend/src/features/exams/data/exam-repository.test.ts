@@ -189,4 +189,35 @@ describe("exam repository", () => {
     ]);
     expect(requests[3]?.body).toEqual({ status: "confirmed" });
   });
+
+  it("deletes a confirmed exam scoped to the authenticated user", async () => {
+    const requests: Array<{
+      readonly options?: SupabaseRequestOptions;
+      readonly path: string;
+    }> = [];
+    const repository = createExamRepository({
+      accessToken: "access-token",
+      client: {
+        request: async <ResponseBody>(
+          path: string,
+          options?: SupabaseRequestOptions,
+        ) => {
+          requests.push({ options, path });
+          return [] as ResponseBody;
+        },
+      },
+    });
+
+    await repository.deleteConfirmedExam({
+      examId: "exam-1",
+      userId: "user-1",
+    });
+
+    expect(requests).toHaveLength(1);
+    expect(requests[0]?.options?.method).toBe("DELETE");
+    expect(requests[0]?.path).toBe(
+      "/rest/v1/body_composition_exams?id=eq.exam-1&user_id=eq.user-1",
+    );
+    expect(requests[0]?.options?.accessToken).toBe("access-token");
+  });
 });

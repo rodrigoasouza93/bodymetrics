@@ -5,6 +5,8 @@ export interface SupabaseAuthResponse {
   readonly user?: SupabaseUser;
   readonly error?: string;
   readonly error_description?: string;
+  readonly details?: string;
+  readonly message?: string;
   readonly msg?: string;
 }
 

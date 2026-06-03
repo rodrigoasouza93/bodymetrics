@@ -3,11 +3,20 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createVertexExamExtractionService } from "./vertex-extraction-service.ts";
 import type { VertexAiConfig } from "./vertex-config";
 
-const config: VertexAiConfig = {
+const oauthConfig: VertexAiConfig = {
+  authMode: "oauth",
   location: "us-central1",
   maxInputBytes: 10 * 1024 * 1024,
   model: "gemini-2.5-flash",
   project: "project-1",
+  timeoutMs: 1000,
+};
+
+const apiKeyConfig: VertexAiConfig = {
+  apiKey: "vertex-api-key",
+  authMode: "api_key",
+  maxInputBytes: 10 * 1024 * 1024,
+  model: "gemini-2.5-flash",
   timeoutMs: 1000,
 };
 
@@ -43,7 +52,7 @@ describe("Vertex exam extraction service", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
     const service = createVertexExamExtractionService({
-      config,
+      config: oauthConfig,
       fetchToken: async () => "token-1",
     });
     const fileBuffer = await readFile("../docs/bio-rodrigo.jpeg");
@@ -68,6 +77,54 @@ describe("Vertex exam extraction service", () => {
     expect(String(init?.body)).not.toContain("bio-rodrigo.jpeg");
   });
 
+  it("uses express mode URL and API key query param without OAuth headers", async () => {
+    const fetchMock = vi.fn<typeof fetch>(async () =>
+      Response.json({
+        candidates: [
+          {
+            content: {
+              parts: [
+                {
+                  text: JSON.stringify({
+                    fields: {
+                      weightKg: {
+                        confidence: 0.9,
+                        rawValue: "78 kg",
+                        value: "78 kg",
+                      },
+                    },
+                    segmentalAnalyses: [],
+                  }),
+                },
+              ],
+            },
+          },
+        ],
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const fetchToken = vi.fn<() => Promise<string>>(async () => "token-1");
+    const service = createVertexExamExtractionService({
+      config: apiKeyConfig,
+      fetchToken,
+    });
+
+    await service.extractExam({
+      fileBuffer: Buffer.from("test"),
+      mimeType: "image/jpeg",
+      originalFilename: "bio.jpeg",
+    });
+
+    const [url, init] = fetchMock.mock.calls[0] ?? [];
+    expect(String(url)).toBe(
+      "https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash:generateContent?key=vertex-api-key",
+    );
+    expect(init?.headers).toEqual({
+      "Content-Type": "application/json",
+    });
+    expect(fetchToken).not.toHaveBeenCalled();
+  });
+
   it("maps provider failures to a safe extraction error", async () => {
     vi.stubGlobal(
       "fetch",
@@ -76,7 +133,7 @@ describe("Vertex exam extraction service", () => {
       ),
     );
     const service = createVertexExamExtractionService({
-      config,
+      config: oauthConfig,
       fetchToken: async () => "token-1",
     });
 
@@ -91,7 +148,7 @@ describe("Vertex exam extraction service", () => {
 
   it("rejects files above the configured provider limit", async () => {
     const service = createVertexExamExtractionService({
-      config: { ...config, maxInputBytes: 1 },
+      config: { ...oauthConfig, maxInputBytes: 1 },
       fetchToken: async () => "token-1",
     });
 

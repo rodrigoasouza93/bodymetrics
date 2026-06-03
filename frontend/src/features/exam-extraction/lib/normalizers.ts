@@ -1,6 +1,9 @@
 const COMMA_DECIMAL_PATTERN = /^-?\d{1,3}(\.\d{3})*,\d+$/;
 const DOT_DECIMAL_PATTERN = /^-?\d+(\.\d+)?$/;
 const DMY_DATE_PATTERN = /^(\d{2})[/-](\d{2})[/-](\d{4})$/;
+const DMY_DOT_DATE_PATTERN = /^(\d{2})\.(\d{2})\.(\d{4})\.?$/;
+const INBODY_DATETIME_PATTERN =
+  /^(\d{2})\.(\d{2})\.(\d{4})\.?\s+(\d{1,2}):(\d{2})$/;
 const ISO_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 export const normalizeDecimalNumber = (value: string | number | null) => {
@@ -66,6 +69,28 @@ export const normalizeExamDate = (value: string | null) => {
     });
   }
 
+  const inbodyDateTimeMatch = INBODY_DATETIME_PATTERN.exec(trimmedValue);
+
+  if (inbodyDateTimeMatch) {
+    return toIsoDateTime({
+      day: Number(inbodyDateTimeMatch[1]),
+      hours: Number(inbodyDateTimeMatch[4]),
+      minutes: Number(inbodyDateTimeMatch[5]),
+      month: Number(inbodyDateTimeMatch[2]),
+      year: Number(inbodyDateTimeMatch[3]),
+    });
+  }
+
+  const dmyDotMatch = DMY_DOT_DATE_PATTERN.exec(trimmedValue);
+
+  if (dmyDotMatch) {
+    return toIsoDateTime({
+      day: Number(dmyDotMatch[1]),
+      month: Number(dmyDotMatch[2]),
+      year: Number(dmyDotMatch[3]),
+    });
+  }
+
   const dmyMatch = DMY_DATE_PATTERN.exec(trimmedValue);
 
   if (!dmyMatch) {
@@ -83,19 +108,25 @@ const roundDecimal = (value: number) => Math.round(value * 100) / 100;
 
 const toIsoDateTime = ({
   day,
+  hours = 0,
+  minutes = 0,
   month,
   year,
 }: {
   readonly day: number;
+  readonly hours?: number;
+  readonly minutes?: number;
   readonly month: number;
   readonly year: number;
 }) => {
-  const date = new Date(Date.UTC(year, month - 1, day));
+  const date = new Date(Date.UTC(year, month - 1, day, hours, minutes));
 
   if (
     date.getUTCFullYear() !== year ||
     date.getUTCMonth() + 1 !== month ||
-    date.getUTCDate() !== day
+    date.getUTCDate() !== day ||
+    date.getUTCHours() !== hours ||
+    date.getUTCMinutes() !== minutes
   ) {
     return null;
   }

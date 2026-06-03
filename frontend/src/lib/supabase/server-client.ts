@@ -76,12 +76,38 @@ export const getCurrentUser = async (): Promise<SupabaseUser | null> => {
   return session?.user ?? null;
 };
 
+const isCookieMutationForbiddenError = (error: unknown) =>
+  error instanceof Error &&
+  error.message.includes("Cookies can only be modified");
+
+const persistAuthSessionSafely = async (
+  authResponse: SupabaseAuthResponse,
+) => {
+  try {
+    await saveAuthSession(authResponse);
+  } catch (error) {
+    if (!isCookieMutationForbiddenError(error)) {
+      throw error;
+    }
+  }
+};
+
+const clearAuthSessionSafely = async () => {
+  try {
+    await clearAuthSession();
+  } catch (error) {
+    if (!isCookieMutationForbiddenError(error)) {
+      throw error;
+    }
+  }
+};
+
 const getCurrentSessionAfterRefresh = async (
   refreshToken: string,
 ): Promise<CurrentSupabaseSession | null> => {
   try {
     const authResponse = await refreshSupabaseAuthSession(refreshToken);
-    await saveAuthSession(authResponse);
+    await persistAuthSessionSafely(authResponse);
 
     if (!authResponse.access_token) {
       return null;
@@ -94,7 +120,7 @@ const getCurrentSessionAfterRefresh = async (
 
     return { accessToken: authResponse.access_token, user };
   } catch {
-    await clearAuthSession();
+    await clearAuthSessionSafely();
 
     return null;
   }

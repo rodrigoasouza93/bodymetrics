@@ -4,6 +4,7 @@ import {
   EXAM_FORM_FIELDS,
   getExamFormValuesFromExam,
 } from "../lib/exam-form";
+import { ExamDeleteButton } from "./exam-delete-form";
 import { ExamReviewFields } from "./exam-review-fields";
 
 interface ExamHistoryPanelProps {
@@ -73,7 +74,11 @@ export function ExamHistoryPanel({ exams }: ExamHistoryPanelProps) {
                   </div>
                 ))}
               </dl>
-              <form action={updateExam} className="grid gap-5">
+              <form
+                action={updateExam}
+                className="grid gap-5"
+                id={`exam-edit-${exam.id}`}
+              >
                 <input name="examId" type="hidden" value={exam.id} />
                 <input
                   name="reviewedPayload"
@@ -81,15 +86,22 @@ export function ExamHistoryPanel({ exams }: ExamHistoryPanelProps) {
                   value={JSON.stringify(exam.reviewedPayload ?? {})}
                 />
                 <ExamReviewFields values={getExamFormValuesFromExam(exam)} />
-                <div className="flex justify-end border-t border-hairline pt-5">
-                  <button
-                    className="min-h-11 cursor-pointer rounded-md bg-primary px-5 py-3 text-sm font-medium text-on-primary transition hover:bg-primary-active"
-                    type="submit"
-                  >
-                    Salvar alterações
-                  </button>
-                </div>
               </form>
+              <div className="flex flex-col gap-3 border-t border-hairline pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <ExamDeleteButton
+                  examDateLabel={formatDate(
+                    exam.examPerformedAt ?? exam.createdAt,
+                  )}
+                  examId={exam.id}
+                />
+                <button
+                  className="min-h-11 cursor-pointer rounded-md bg-primary px-5 py-3 text-sm font-medium text-on-primary transition hover:bg-primary-active"
+                  form={`exam-edit-${exam.id}`}
+                  type="submit"
+                >
+                  Salvar alterações
+                </button>
+              </div>
             </div>
           </details>
         ))}

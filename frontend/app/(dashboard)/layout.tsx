@@ -1,5 +1,9 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/src/lib/supabase/server-client";
+import { DashboardShell } from "@/src/features/dashboard/components/dashboard-shell";
+import {
+  getCurrentSession,
+  getCurrentUser,
+} from "@/src/lib/supabase/server-client";
 
 export default async function DashboardLayout({
   children,
@@ -12,5 +16,11 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  return children;
+  const session = await getCurrentSession();
+
+  return (
+    <DashboardShell userEmail={session?.user.email ?? user.email ?? ""}>
+      {children}
+    </DashboardShell>
+  );
 }

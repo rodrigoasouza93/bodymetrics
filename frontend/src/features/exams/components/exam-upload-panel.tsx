@@ -32,6 +32,34 @@ export function ExamUploadPanel() {
     readonly values: ExamFormValues;
   } | null>(null);
 
+  const resetUploadPanel = () => {
+    setReview(null);
+    setFileName("");
+    setError(null);
+  };
+
+  const handleCancel = (formData: FormData) => {
+    startTransition(async () => {
+      try {
+        await cancelExamUpload(formData);
+        resetUploadPanel();
+      } catch {
+        setError("Não foi possível cancelar o cadastro.");
+      }
+    });
+  };
+
+  const handleConfirm = (formData: FormData) => {
+    startTransition(async () => {
+      try {
+        await confirmExamUpload(formData);
+        resetUploadPanel();
+      } catch {
+        setError("Não foi possível salvar o exame.");
+      }
+    });
+  };
+
   const handleUpload = (formData: FormData) => {
     setError(null);
     startTransition(async () => {
@@ -74,7 +102,8 @@ export function ExamUploadPanel() {
           Campos destacados precisam de atenção. A confirmação abaixo é
           obrigatória para inserir o exame no histórico.
         </Alert>
-        <form action={confirmExamUpload} className="grid gap-5">
+        {error ? <Alert tone="error">{error}</Alert> : null}
+        <form action={handleConfirm} className="grid gap-5">
           <input name="uploadId" type="hidden" value={review.uploadId} />
           <input
             name="reviewedPayload"
@@ -83,16 +112,19 @@ export function ExamUploadPanel() {
           />
           <ExamReviewFields issues={review.issues} values={review.values} />
           <div className="flex flex-col gap-3 border-t border-hairline pt-5 sm:flex-row sm:justify-end">
-            <Button type="submit">Confirmar e salvar</Button>
+            <Button disabled={isPending} type="submit">
+              {isPending ? "Salvando..." : "Confirmar e salvar"}
+            </Button>
           </div>
         </form>
-        <form action={cancelExamUpload}>
+        <form action={handleCancel}>
           <input name="uploadId" type="hidden" value={review.uploadId} />
           <button
-            className="min-h-11 cursor-pointer rounded-md border border-hairline bg-canvas px-5 py-3 text-sm font-medium text-ink transition hover:border-primary-active"
+            className="min-h-11 cursor-pointer rounded-md border border-hairline bg-canvas px-5 py-3 text-sm font-medium text-ink transition hover:border-primary-active disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={isPending}
             type="submit"
           >
-            Cancelar cadastro
+            {isPending ? "Cancelando..." : "Cancelar cadastro"}
           </button>
         </form>
       </section>

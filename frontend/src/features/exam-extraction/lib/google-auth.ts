@@ -55,7 +55,7 @@ const readServiceAccountCredentials =
 
     if (!credentialsPath) {
       throw new Error(
-        "Configure GOOGLE_CLOUD_ACCESS_TOKEN ou GOOGLE_APPLICATION_CREDENTIALS.",
+        "Configure VERTEX_AI_API_KEY (express), GOOGLE_CLOUD_ACCESS_TOKEN ou GOOGLE_APPLICATION_CREDENTIALS.",
       );
     }
 

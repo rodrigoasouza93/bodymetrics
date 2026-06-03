@@ -67,8 +67,14 @@ export interface UpdateExamInput {
   readonly userId: string;
 }
 
+export interface DeleteExamInput {
+  readonly examId: string;
+  readonly userId: string;
+}
+
 export interface ExamRepository {
   createConfirmedExam(input: ConfirmExamInput): Promise<BodyCompositionExam>;
+  deleteConfirmedExam(input: DeleteExamInput): Promise<void>;
   getExamById(input: {
     readonly examId: string;
     readonly userId: string;

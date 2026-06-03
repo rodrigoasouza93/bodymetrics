@@ -37,7 +37,7 @@ export const confirmExamUpload = async (formData: FormData) => {
     uploadId,
     userId: session.user.id,
   });
-  revalidatePath("/dashboard");
+  revalidatePath("/dashboard", "layout");
 };
 
 export const updateExam = async (formData: FormData) => {
@@ -63,7 +63,26 @@ export const updateExam = async (formData: FormData) => {
     }),
     userId: session.user.id,
   });
-  revalidatePath("/dashboard");
+  revalidatePath("/dashboard", "layout");
+};
+
+export const deleteExam = async (formData: FormData) => {
+  const session = await getCurrentSession();
+
+  if (!session) {
+    return;
+  }
+
+  const repository = createExamRepository({
+    accessToken: session.accessToken,
+    client: createServerSupabaseClient(),
+  });
+
+  await repository.deleteConfirmedExam({
+    examId: readRequiredString(formData, "examId"),
+    userId: session.user.id,
+  });
+  revalidatePath("/dashboard", "layout");
 };
 
 const toJsonPayload = (payload: unknown): Json =>
@@ -85,5 +104,5 @@ export const cancelExamUpload = async (formData: FormData) => {
       userId: session.user.id,
     },
   });
-  revalidatePath("/dashboard");
+  revalidatePath("/dashboard", "layout");
 };

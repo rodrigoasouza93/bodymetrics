@@ -59,7 +59,8 @@ describe("ExamTrendsPanel", () => {
       />,
     );
 
-    expect(screen.getByText("Valores de Peso por exame")).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Evolução de Peso" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Peso" })).toBeTruthy();
     expect(
       screen.getByText("Seu peso reduziu 2 kg (2,5%) em relação ao exame anterior."),
     ).toBeTruthy();

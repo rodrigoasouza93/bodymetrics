@@ -68,13 +68,17 @@ const createDependencies = ({
       requests.push({ body: options?.body, options, path });
 
       if (options?.method === "PATCH") {
-        const body = options.body as { readonly status: ExamUploadRow["status"] };
+        const body = options.body as {
+          readonly error_message?: string | null;
+          readonly status: ExamUploadRow["status"];
+        };
         return [
           {
             ...uploadRow,
             error_message:
               body.status === "failed"
-                ? "Não foi possível extrair os dados do exame."
+                ? (body.error_message ??
+                  "Não foi possível extrair os dados do exame.")
                 : null,
             extracted_payload:
               body.status === "needs_review" ? { fixture: true } : null,
@@ -96,6 +100,10 @@ const createDependencies = ({
   return {
     dependencies: {
       createUploadId: () => "upload-1",
+      extractionProvider: {
+        model: "mock-fixture-v1",
+        name: "mock",
+      },
       extractionService,
       requestClient,
       uploadFileToStorage,
@@ -169,6 +177,10 @@ describe("exam upload service", () => {
       "POST",
       "PATCH",
     ]);
+    expect(requests[1]?.body).toMatchObject({
+      provider: "mock",
+      provider_model: "mock-fixture-v1",
+    });
   });
 
   it("returns a safe failed status when extraction fails", async () => {
@@ -190,6 +202,33 @@ describe("exam upload service", () => {
     expect(response.status).toBe(500);
     expect(await response.json()).toEqual({
       error: "Não foi possível extrair os dados do exame.",
+      status: "failed",
+      uploadId: "upload-1",
+    });
+  });
+
+  it("returns a quota-specific message when OpenAI credits are exhausted", async () => {
+    const extractionService: ExamExtractionService = {
+      extractExam: async () => {
+        throw new Error(
+          "You exceeded your current quota, please check your plan and billing details.",
+        );
+      },
+    };
+    const { dependencies } = createDependencies({ extractionService });
+
+    const response = await handlePostExamUpload({
+      dependencies,
+      request: createUploadRequest(
+        new File(["test"], "bio.jpeg", { type: "image/jpeg" }),
+      ),
+      session,
+    });
+
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({
+      error:
+        "A cota da OpenAI foi excedida. Verifique billing e créditos da API.",
       status: "failed",
       uploadId: "upload-1",
     });

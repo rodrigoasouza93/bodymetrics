@@ -6,6 +6,7 @@ import type { SupabaseRequestOptions } from "@/src/lib/supabase/types";
 import type {
   BodyCompositionExamInput,
   ConfirmExamInput,
+  DeleteExamInput,
   ExamRepository,
   UpdateExamInput,
 } from "../lib/exam-types";
@@ -74,6 +75,8 @@ export const createExamRepository = ({
 }: ExamRepositoryOptions): ExamRepository => ({
   createConfirmedExam: (input) =>
     createConfirmedExam({ accessToken, client, input }),
+  deleteConfirmedExam: (input) =>
+    deleteConfirmedExam({ accessToken, client, input }),
   getExamById: (input) => getExamById({ accessToken, client, input }),
   listConfirmedExams: (userId) =>
     listConfirmedExams({ accessToken, client, userId }),
@@ -178,6 +181,22 @@ const createConfirmedExam = async ({
     examId: row.id,
     userId: input.userId,
   });
+};
+
+const deleteConfirmedExam = async ({
+  accessToken,
+  client,
+  input,
+}: ExamRepositoryOptions & {
+  readonly input: DeleteExamInput;
+}) => {
+  await client.request<Record<string, never>>(
+    [
+      `/rest/v1/body_composition_exams?id=eq.${encodeURIComponent(input.examId)}`,
+      `user_id=eq.${encodeURIComponent(input.userId)}`,
+    ].join("&"),
+    { accessToken, method: "DELETE" },
+  );
 };
 
 const updateConfirmedExam = async ({

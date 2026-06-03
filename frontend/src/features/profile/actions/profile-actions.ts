@@ -23,7 +23,7 @@ export const updateProfile = async (
   });
 
   if (state.success) {
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard", "layout");
   }
 
   return state;

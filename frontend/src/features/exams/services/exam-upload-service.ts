@@ -2,11 +2,10 @@ import { randomUUID } from "node:crypto";
 import { createServerSupabaseClient } from "@/src/lib/supabase/server-client";
 import type { CurrentSupabaseSession } from "@/src/lib/supabase/server-client";
 import type { Json } from "@/src/types/database";
-import { createMockExamExtractionService } from "@/src/features/exam-extraction/lib/mock-extraction-service";
 import { serializeExtractionPayload } from "@/src/features/exam-extraction/lib/mock-extraction-service";
+import type { ConfiguredExamExtractionService } from "@/src/features/exam-extraction/lib/exam-extraction-provider";
+import { createConfiguredExamExtractionService } from "@/src/features/exam-extraction/lib/exam-extraction-provider";
 import type { ExamExtractionService } from "@/src/features/exam-extraction/lib/extraction-types";
-import { getVertexAiConfig } from "@/src/features/exam-extraction/lib/vertex-config";
-import { createVertexExamExtractionService } from "@/src/features/exam-extraction/lib/vertex-extraction-service";
 import { buildExamStoragePath } from "../lib/storage-paths";
 import {
   type AllowedExamMimeType,
@@ -22,6 +21,7 @@ import { uploadExamFileToStorage } from "../data/exam-file-storage";
 export interface ExamUploadServiceDependencies {
   readonly createUploadId: () => string;
   readonly extractionService: ExamExtractionService;
+  readonly extractionProvider: ConfiguredExamExtractionService["extractionProvider"];
   readonly requestClient: ReturnType<typeof createServerSupabaseClient>;
   readonly uploadFileToStorage: typeof uploadExamFileToStorage;
 }
@@ -36,27 +36,59 @@ export interface ExamUploadResponseBody {
   readonly uploadId?: string;
 }
 
-const PROVIDER_NAME = "mock";
-const PROVIDER_MODEL = "mock-fixture-v1";
 const MIN_READABLE_CONFIDENCE = 0.4;
+const DEFAULT_EXTRACTION_ERROR_MESSAGE =
+  "Não foi possível extrair os dados do exame.";
+
+const getExtractionErrorMessage = (error: unknown) => {
+  if (!(error instanceof Error)) {
+    return DEFAULT_EXTRACTION_ERROR_MESSAGE;
+  }
+
+  const message = error.message.toLowerCase();
+
+  if (
+    message.includes("insufficient_quota") ||
+    message.includes("exceeded your current quota")
+  ) {
+    return "A cota da OpenAI foi excedida. Verifique billing e créditos da API.";
+  }
+
+  if (
+    message.includes("invalid api key") ||
+    message.includes("incorrect api key")
+  ) {
+    return "A chave da OpenAI é inválida. Revise OPENAI_API_KEY no .env.local.";
+  }
+
+  if (message.includes("model") && message.includes("not exist")) {
+    return "O modelo configurado para extração não está disponível na OpenAI.";
+  }
+
+  if (
+    message.includes("temperature") &&
+    message.includes("unsupported")
+  ) {
+    return "O modelo configurado não aceita temperature=0. Atualize o serviço de extração ou troque o modelo.";
+  }
+
+  if (
+    message.includes("não respondeu dentro de") ||
+    message.includes("openai_exam_timeout_ms")
+  ) {
+    return error.message;
+  }
+
+  return DEFAULT_EXTRACTION_ERROR_MESSAGE;
+};
 
 export const createDefaultExamUploadServiceDependencies =
   (): ExamUploadServiceDependencies => ({
     createUploadId: randomUUID,
-    extractionService: createConfiguredExamExtractionService(),
+    ...createConfiguredExamExtractionService(),
     requestClient: createServerSupabaseClient(),
     uploadFileToStorage: uploadExamFileToStorage,
   });
-
-const createConfiguredExamExtractionService = () => {
-  const vertexConfig = getVertexAiConfig();
-
-  if (!vertexConfig) {
-    return createMockExamExtractionService();
-  }
-
-  return createVertexExamExtractionService({ config: vertexConfig });
-};
 
 export const handlePostExamUpload = async ({
   dependencies = createDefaultExamUploadServiceDependencies(),
@@ -208,8 +240,8 @@ const extractAndPersistUpload = async ({
         errorMessage,
         extractedPayload,
         overallConfidence: extractionResult.overallConfidence,
-        provider: PROVIDER_NAME,
-        providerModel: PROVIDER_MODEL,
+        provider: dependencies.extractionProvider.name,
+        providerModel: dependencies.extractionProvider.model,
         status,
         uploadId,
         userId: session.user.id,
@@ -225,12 +257,13 @@ const extractAndPersistUpload = async ({
       status: upload.status,
       uploadId: upload.id,
     }, status === "failed" ? 422 : 200);
-  } catch {
+  } catch (error) {
+    const errorMessage = getExtractionErrorMessage(error);
     const upload = await updateExamUploadRecord({
       accessToken: session.accessToken,
       client: dependencies.requestClient,
       input: {
-        errorMessage: "Não foi possível extrair os dados do exame.",
+        errorMessage,
         status: "failed",
         uploadId,
         userId: session.user.id,
@@ -239,7 +272,7 @@ const extractAndPersistUpload = async ({
 
     return createJsonResponse(
       {
-        error: upload.error_message ?? "Não foi possível extrair os dados do exame.",
+        error: upload.error_message ?? errorMessage,
         status: upload.status,
         uploadId: upload.id,
       },

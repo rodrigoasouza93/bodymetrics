@@ -28,9 +28,9 @@ describe("Vertex extraction parser", () => {
               value: "22,5%",
             },
             examPerformedAt: {
-              confidence: 0.7,
-              rawValue: "02/06/2026",
-              value: "02/06/2026",
+              confidence: 0.95,
+              rawValue: "20.05.2026. 15:51",
+              value: "20.05.2026. 15:51",
             },
             inbodyScore: {
               confidence: 0.6,
@@ -68,7 +68,7 @@ describe("Vertex extraction parser", () => {
     expect(result.fields.bodyFatMassKg.value).toBe(18.4);
     expect(result.fields.bodyFatPercentage.value).toBe(22.5);
     expect(result.fields.examPerformedAt.value).toBe(
-      "2026-06-02T00:00:00.000Z",
+      "2026-05-20T15:51:00.000Z",
     );
     expect(result.fields.segmentalAnalyses.value).toEqual([
       {
