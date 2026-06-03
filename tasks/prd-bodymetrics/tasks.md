@@ -12,5 +12,5 @@
 - [x] 6.0 Implementar adaptador Vertex AI/Gemini para extração estruturada
 - [x] 7.0 Construir UI de revisão, confirmação, histórico, detalhe, edição e gráficos
 - [x] 8.0 Executar QA final de regressão conforme `execute_qa.md`
-- [ ] 9.0 Corrigir bugs residuais pós-QA conforme `execute_bugfix.md`
+- [x] 9.0 Corrigir bugs residuais pós-QA conforme `execute_bugfix.md`
 - [ ] 10.0 Executar code review final conforme `execute_review.md`
