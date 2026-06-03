@@ -78,10 +78,15 @@ describe("ProfileForm", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Salvar perfil" }));
 
-    const heightField = await screen.findByLabelText("Altura em cm");
+    const heightField = screen.getByLabelText("Altura em cm");
 
-    expect(heightField).toHaveAttribute("aria-invalid", "true");
-    expect(heightField).toHaveAttribute("aria-describedby", "profile-height-error");
+    await waitFor(() => {
+      expect(heightField).toHaveAttribute("aria-invalid", "true");
+      expect(heightField).toHaveAttribute(
+        "aria-describedby",
+        "profile-height-error",
+      );
+    });
     expect(
       screen.getByText("Informe uma altura entre 30 cm e 300 cm."),
     ).toBeVisible();
